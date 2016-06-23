@@ -79,7 +79,7 @@ def get_reddit_posts(subreddit_info):
                 'title': submission.title,
                 # This stores a link to the reddit post itself
                 # If you want to link to what the post is linking to instead, use
-                # "submission.url" instead of "submission.permanlink"
+                # "submission.url" instead of "submission.permalink"
                 'link': submission.permalink,
                 # Store the url the post points to (if any)
                 # If it's an imgur URL, it will later be downloaded and uploaded alongside the tweet
