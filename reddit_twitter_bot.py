@@ -47,8 +47,7 @@ def setup_connection_reddit(subreddit):
     ''' Creates a connection to the reddit API. '''
     print('[bot] Setting up connection with reddit')
     reddit_api = praw.Reddit('reddit Twitter tool monitoring {}'.format(subreddit))
-    subreddit = reddit_api.get_subreddit(subreddit)
-    return subreddit
+    return reddit_api.get_subreddit(subreddit)
 
 
 def tweet_creator(subreddit_info):
@@ -73,11 +72,11 @@ def tweet_creator(subreddit_info):
             post_dict[submission.title] = {}
             post = post_dict[submission.title]
             post['link'] = submission.permalink
-            
+
             # Store the url the post points to (if any)
             # If it's an imgur URL, it will later be downloaded and uploaded alongside the tweet
             post['img_path'] = get_image(submission.url)
-            
+
             post_ids.append(submission.id)
         else:
             print('[bot] Already tweeted: {}'.format(str(submission)))
@@ -87,13 +86,11 @@ def tweet_creator(subreddit_info):
 
 def already_tweeted(post_id):
     ''' Checks if the reddit Twitter bot has already tweeted a post. '''
-    found = False
     with open(POSTED_CACHE, 'r') as in_file:
         for line in in_file:
             if post_id in line:
-                found = True
-                break
-    return found
+                return True
+    return False
 
 
 def strip_title(title, num_characters):
@@ -169,7 +166,7 @@ def main():
     subreddit = setup_connection_reddit(SUBREDDIT_TO_MONITOR)
     post_dict, post_ids = tweet_creator(subreddit)
     tweeter(post_dict, post_ids)
-    
+
     # Clean out the image cache
     for filename in glob(IMAGE_DIR + '/*'):
     	os.remove(filename)
